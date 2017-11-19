@@ -1,0 +1,65 @@
+﻿@model IEnumerable<EZInventory.Models.LocationViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ <h2>Locations</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="CSSTableGenerator" style="clear:both">
+<table>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.ID)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.description)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.inventories)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.capacity)
+        </td>
+        <td></td>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @{bool first = true;}
+            @foreach (var id in item.inventoryDetails) {
+                if ((id.boxqty * id.itemperbox + id.itemqty) > 0)
+                {
+                     if (!first)
+                     {
+                         @Html.Raw(", ");
+                     }
+                     @Html.ActionLink(id.Inventory.sku, "Edit", "Inventory", new { id = id.Inventory.id }, null)
+                    @Html.Raw(" (" + (id.boxqty * id.itemperbox + id.itemqty)+")"); 
+                    first = false;
+                }
+            }
+            
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.capacity)%
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+</table>
+</div>

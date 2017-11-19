@@ -1,0 +1,103 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using System.Data.Entity.Infrastructure;
+using EZInventory.Model;
+using EZInventory.Models;
+
+
+namespace EZInventory.Controllers
+{
+    public class InventoryController : Controller
+    {
+        private UnitOfWork unitOfWork = new UnitOfWork();
+        private EZInventoryEntities db = new EZInventoryEntities();
+        //
+        // GET: /Inventory/
+
+        public ViewResult Index()
+        {
+            var inventories = unitOfWork.InventoryRepository.Get();
+            return View(inventories.ToList());
+        }
+
+        public ViewResult Edit(int id)
+        {
+            var inventory = unitOfWork.InventoryRepository.GetByID(id);
+            ViewData["sku"] = EZDropDown.Products(unitOfWork, inventory.sku);
+            return View(inventory);
+        }
+
+        public int GetQty(string id)
+        {
+            var inv = unitOfWork.InventoryRepository.GetByID(int.Parse(id));
+            return (int)(inv.qty);
+        }
+
+        public ActionResult Create()
+        {
+            ViewData["sku"] = EZDropDown.Products(unitOfWork);
+            ViewData["locationid"] = EZDropDown.Locations(unitOfWork);
+            ViewData["capacity"] = EZDropDown.Percentage();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "id, sku, lot, batch, expdate, qty, inputdate, companyid, locationid")]Inventory inventory)
+        {
+            //try
+            //{
+                if (ModelState.IsValid)
+                {
+                    unitOfWork.InventoryRepository.Update(inventory);
+                    unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
+            //}
+            //catch (DataException /* dex */)
+            //{
+            //    //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
+            //    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            //}
+                ViewBag.sku = EZDropDown.Products(unitOfWork, inventory.sku);
+            return View(inventory);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "sku, lot, batch, expdate, qty, inputdate, companyid, locationid")]Inventory inventory)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Inventories.Add(inventory);
+                    db.SaveChanges();
+                    int capacity = Convert.ToInt32(Request["capacity"].ToString());
+                    string locationString = inventory.locationid;
+                    Location l = unitOfWork.LocationRepository.GetByID(locationString);
+                    l.capacity = capacity;
+                    unitOfWork.LocationRepository.Update(l);
+                    unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.)
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
+            //ViewData["sku"] = EZDropDown.Products(unitOfWork);
+            return View(inventory);
+        }
+
+    }
+}

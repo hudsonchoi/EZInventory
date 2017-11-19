@@ -1,0 +1,64 @@
+﻿@using EZInventory.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - YJ Packaging Solutions</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+@{LoginModel lm = (LoginModel)Session["loginModel"];}
+<script src="~/Scripts/main.js"></script>
+    <script type="text/javascript">
+    //$(document).ready(function()
+    //{
+    //  $(".table tr:odd").css("background-color", "lightgray");
+    //});
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index","Home")">
+                    <img src="~/Content/images/logo.png" />
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="navbar-collapse collapse" style="margin-top:40px">>
+                <ul class="nav navbar-nav">
+                    @if (lm.companyID == 0){
+                        <li id="company">@Html.ActionLink("Companies", "Index", "Company")</li>
+                    }
+                    @if (lm.companyID == 0){
+                        <li id="item">@Html.ActionLink("Items", "Index", "Item")</li>
+                    }
+                    <li id="inventory">@Html.ActionLink("Inventories", "Index", "Inventory")</li>
+                    <li id="order">@Html.ActionLink("Orders", "Index", "Order")</li>
+                    @if (lm.companyID == 0){
+                        <li id="location">@Html.ActionLink("Locations", "Index", "Location")</li>
+                    }
+                    <li>@Html.ActionLink("Log Out", "Logoff", "Logout")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="margin-top:40px">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Y.J. Packaging Solutions Inc.</p>
+        </footer>
+    </div>
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

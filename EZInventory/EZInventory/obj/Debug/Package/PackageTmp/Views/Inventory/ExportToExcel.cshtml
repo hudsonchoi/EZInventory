@@ -1,0 +1,89 @@
+﻿@using EZInventory.Models;
+@model IEnumerable<EZInventory.Models.InventoryListModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+<body>
+<style type="text/css">
+    td.title {
+        background-color:#0070c0; color:white; font-weight:bold
+    }
+    td.alt {
+        background-color: #95d1fc;
+    }
+</style>
+<table border="1">
+    <tr style="">
+        <td class="title">
+           COMPANY
+        </td>
+        <td class="title">
+           ITEM CODE
+        </td>
+        <td class="title">
+          BARCODE
+        </td>
+        <td class="title">
+            STOCKING DATE
+        </td>
+        <td class="title">
+            ITEM QTY
+        </td>
+        <td class="title">
+            LOCATION
+        </td>
+    </tr>
+@{int i = 0;}
+@foreach (var item in Model) {
+    if (i%2 == 0){
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.company)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sku)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.barcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stockingDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalQty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+    </tr>
+    }else{
+    <tr>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.company)
+        </td>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.sku)
+        </td>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.barcode)
+        </td>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.stockingDate)
+        </td>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.totalQty)
+        </td>
+        <td class="alt">
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+    </tr>
+    }
+    i++;
+}
+</table>
+</body>
+</html>

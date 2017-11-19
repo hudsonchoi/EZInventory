@@ -1,0 +1,187 @@
+﻿@model EZInventory.Model.Inventory
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/inventory.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#sku").change(function () {   
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "/product/"+$(this).val(),
+                success: function (data) {
+                    $("#spanBarcode").text(data);
+                    $("#barcode").val(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert('Failed to retrieve states.');
+                    //statesProgress.hide();
+                }
+            });
+        });
+
+        $(function () {
+            $("#expdate").datepicker();
+            $("#inputdate").datepicker();
+        });
+    });
+</script>
+<h2><a href="/Inventory">Inventories</a> :: New</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+       @Html.HiddenFor(model => model.id)
+
+        <div class="EZCol">
+            <div class="form-group" style="width:500px">
+                @Html.LabelFor(model => model.companyid, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("companyid", String.Empty)  <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.companyid)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.sku, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("sku", String.Empty) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.sku)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.expdate, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.expdate)
+                    @Html.ValidationMessageFor(model => model.expdate)
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="EZCol" style="clear:right">    
+
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="batch">Barcode</label>
+                <div class="col-md-8">
+                    <span id="spanBarcode">@ViewBag.Barcode</span>
+                    @Html.Hidden("barcode", (object)ViewBag.Barcode)
+ 
+                </div>
+            </div> 
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.batch, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.batch)
+                    @Html.ValidationMessageFor(model => model.batch)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.inputdate, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.inputdate)
+                    @Html.ValidationMessageFor(model => model.inputdate)
+                </div>
+            </div>
+
+        </div>
+    <div style="display:none; position:relative; padding-top:10px; padding-bottom:20px; clear:both; width:80%" id="divList">
+        <div class="CSSTableGenerator" style="clear:both; min-width:300px">
+                <table id="invTable">
+                    <tr>
+                        <td style="width:20%">
+                            Location
+                        </td>
+                        <td style="width:10%">
+                            Lot
+                        </td>
+                        <td style="width:20%">
+                            UNT. Carton Q'ty
+                        </td>
+                        <td style="width:20%">
+                            Items/Carton
+                        </td>
+                        <td style="width:20%">
+                            PAR. Carton Item Q'ty
+                        </td>
+                        <td style="width:10%">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+    </div>
+
+<div class="EZCol" style="clear:left;width:500px">@Html.ValidationMessageFor(model => model.InventoryDetails)</div>
+        <div class="EZCol" style="clear:left;width:230px">
+            <div class="form-group">
+                <label class="control-label col-md-4" for="locationid">UNT. Carton Q'ty</label>
+                <div class="col-md-4">
+                    @Html.DropDownList("boxqty", String.Empty)<span class="req">*</span>
+                </div>
+            </div>
+        </div>
+        <div class="EZCol" style="width:230px">
+            <div class="form-group">
+                <label class="control-label col-md-4" for="locationid">Items/Carton</label>
+                <div class="col-md-4">
+                    @Html.DropDownList("itembox", String.Empty)<span class="req">*</span>
+                </div>
+            </div>
+        </div>
+        <div class="EZCol" style="clear:right; width:240px">
+            <div class="form-group">
+                <label class="control-label col-md-4" for="qty" style="width:130px">PAR. Carton Item Q'ty</label>
+                <div class="col-md-4">
+                    @Html.TextBox("qty","0", new { @class = "shorty"})<span class="req">*</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="EZCol" style="clear:left; width:235px">
+            <div class="form-group">
+                <label class="control-label col-md-4" for="lot">Lot</label>
+                <div class="col-md-4">
+                    @Html.TextBox("lot","", new { @class = "shorty"})<span class="req">*</span>
+                </div>
+            </div>
+        </div>
+        <div class="EZCol" style="width:500px">
+                <div class="form-group">
+                <label class="control-label col-md-4" for="locationid">Location</label>
+                <div class="col-md-8">
+                    @Html.DropDownList("locationid", String.Empty) <span class="req">*</span>
+                    <b>use</b> <select id="capacity" disabled="disabled" style="width:50px"></select> <span class="req">*</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-10">
+                    <input type="hidden" name="deleted" id="deleted" value="false" />
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>    
+        </div>
+
+
+
+
+    </div>
+}
+<div style="clear:both">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,167 @@
+﻿@model EZInventory.Model.Company
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+
+        $("#selfBilling").change(function () {
+            if (this.checked) {
+                $("#billto").attr('checked',true);
+                $("#billtocid").attr("disabled", "disabled");
+            } else {
+                $("#billtocid").removeAttr("disabled");
+            }
+        });
+    });
+
+
+
+</script>
+<h2><a href="/Company">Companies</a> :: New</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="clear:both">
+
+<div class="EZCol" style="clear:left;width:1000px">
+        @Html.HiddenFor(model => model.id)
+        <div class="EZCol">
+            <div class="form-group">
+                @Html.Label("Name ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.name) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.name)
+                </div>
+            </div>
+        </div>
+
+        <div class="EZCol">
+            <div class="form-group" style="width:800px">
+                @Html.Label("Address ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8" style="width:500px">
+                    @Html.TextBoxFor(model => model.address, new { style = "width: 290px" }) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.address)
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="EZCol" style="clear:left;width:1000px">
+        <div class="EZCol">
+             <div class="form-group">
+                @Html.Label(" City", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.city) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.city)
+                </div>
+            </div>
+        </div>
+        <div class="EZCol">
+           <div class="form-group">
+                @Html.Label("State ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.state) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.state)
+                </div>
+            </div>
+        </div>
+        <div class="EZCol">
+           <div class="form-group">
+                   @Html.Label("Zip ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.zip) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.zip)
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="EZCol" style="clear:left;width:1000px">
+        <div class="EZCol">
+             <div class="form-group">
+                @Html.Label("Email ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.email) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.email)
+                </div>
+            </div>
+         </div>
+         <div class="EZCol">
+           <div class="form-group">
+                @Html.Label("Password ", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.password) <span class="req">*</span>
+                    @Html.ValidationMessageFor(model => model.password)
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="EZCol" style="clear:left;width:1000px">
+        <div class="EZCol">
+             <div class="form-group">
+                   @Html.Label("Billing", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.CheckBox("billto", false)
+                    @Html.ValidationMessageFor(model => model.billto)
+                </div>
+            </div>
+       </div>
+        <div class="EZCol">
+           <div class="form-group">
+                @Html.Label("Shipping", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.CheckBox("shipto", false)
+                    @Html.ValidationMessageFor(model => model.shipto)
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<div class="EZCol" style="clear:left;width:1000px">
+
+        <div class="EZCol">
+            <div class="form-group">
+                @Html.Label("Bill To Self", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.CheckBox("selfBilling", false)
+                </div>
+            </div>
+        </div>
+
+        <div class="EZCol">
+            <div class="form-group">
+                @Html.Label("Bill To", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model=>model.billtocid,  new SelectList(ViewBag.CompanyIDs, "id", "name"),"Select")
+                    @Html.ValidationMessage("Required")
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+
+    </div>
+        <div style="clear:both">
+        <input type="hidden" name="deleted" id="deleted" value="false" />
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

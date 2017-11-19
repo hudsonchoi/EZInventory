@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EZInventoryModelStoreContainer" CdmEntityContainer="EZInventoryEntities">
+    <EntitySetMapping Name="Boxes">
+      <EntityTypeMapping TypeName="EZInventoryModel.Box">
+        <MappingFragment StoreEntitySet="Box">
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="EZInventoryModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Colors">
+      <EntityTypeMapping TypeName="EZInventoryModel.Color">
+        <MappingFragment StoreEntitySet="Color">
+          <ScalarProperty Name="abbr" ColumnName="abbr" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="EZInventoryModel.Status">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stores">
+      <EntityTypeMapping TypeName="EZInventoryModel.Store">
+        <MappingFragment StoreEntitySet="Store">
+          <ScalarProperty Name="companyid" ColumnName="companyid" />
+          <ScalarProperty Name="zip" ColumnName="zip" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="street" ColumnName="street" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Locations">
+      <EntityTypeMapping TypeName="EZInventoryModel.Location">
+        <MappingFragment StoreEntitySet="Location">
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyOrders">
+      <EntityTypeMapping TypeName="EZInventoryModel.CompanyOrder">
+        <MappingFragment StoreEntitySet="CompanyOrder">
+          <ScalarProperty Name="companyid" ColumnName="companyid" />
+          <ScalarProperty Name="orderid" ColumnName="orderid" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Companies">
+      <EntityTypeMapping TypeName="EZInventoryModel.Company">
+        <MappingFragment StoreEntitySet="Company">
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="zip" ColumnName="zip" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="billtocid" ColumnName="billtocid" />
+          <ScalarProperty Name="shipto" ColumnName="shipto" />
+          <ScalarProperty Name="billto" ColumnName="billto" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderDetails">
+      <EntityTypeMapping TypeName="EZInventoryModel.OrderDetail">
+        <MappingFragment StoreEntitySet="OrderDetails">
+          <ScalarProperty Name="boxqty" ColumnName="boxqty" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="inventoryid" ColumnName="inventoryid" />
+          <ScalarProperty Name="locationid" ColumnName="locationid" />
+          <ScalarProperty Name="orderid" ColumnName="orderid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="EZInventoryModel.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="shippingdate" ColumnName="shippingdate" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="statusid" ColumnName="statusid" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="EZInventoryModel.Item">
+        <MappingFragment StoreEntitySet="Item">
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="companyid" ColumnName="companyid" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="colorid" ColumnName="colorid" />
+          <ScalarProperty Name="categoryid" ColumnName="categoryid" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InventoryDetails">
+      <EntityTypeMapping TypeName="EZInventoryModel.InventoryDetail">
+        <MappingFragment StoreEntitySet="InventoryDetails">
+          <ScalarProperty Name="lot" ColumnName="lot" />
+          <ScalarProperty Name="itemperbox" ColumnName="itemperbox" />
+          <ScalarProperty Name="capacity" ColumnName="capacity" />
+          <ScalarProperty Name="itemqty" ColumnName="itemqty" />
+          <ScalarProperty Name="boxqty" ColumnName="boxqty" />
+          <ScalarProperty Name="boxid" ColumnName="boxid" />
+          <ScalarProperty Name="locationid" ColumnName="locationid" />
+          <ScalarProperty Name="inventoryid" ColumnName="inventoryid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inventories">
+      <EntityTypeMapping TypeName="EZInventoryModel.Inventory">
+        <MappingFragment StoreEntitySet="Inventory">
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="capacity" ColumnName="capacity" />
+          <ScalarProperty Name="companyid" ColumnName="companyid" />
+          <ScalarProperty Name="inputdate" ColumnName="inputdate" />
+          <ScalarProperty Name="expdate" ColumnName="expdate" />
+          <ScalarProperty Name="batch" ColumnName="batch" />
+          <ScalarProperty Name="lot" ColumnName="lot" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

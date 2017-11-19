@@ -1,0 +1,159 @@
+﻿@model EZInventory.Model.Inventory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/inventory.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        @foreach (var inv in Model.InventoryDetails) {
+            if (@inv.boxqty > 0 || @inv.itemqty > 0){
+                <text>
+                        var uuid = guid();
+                    $("#invTable").append("<tr id='" + uuid + "'><td>" + '@inv.locationid' + " : " + '@inv.capacity' + " %</td><td>" + '@inv.lot' + "</td><td>" +
+                                           '@inv.boxqty' + "</td><td>" + '@inv.itemperbox' + "</td><td>"+'@inv.itemqty' +
+                                          "</td><</tr>");
+                    $("#divList").show();
+                    @*
+                    //$("#invTable").append("<tr id='" + uuid + "'><td>" + '@inv.locationid + " : " + newCapacity + "%</td><td>" + $("#qty").val() +
+                    //                  "</td><td>" + $("#boxid option:selected").text() + "</td><td>" + $("#quantity").val() +
+                    //                  "</td><td><span class='delete' onclick=\"javascript:DeleteItem('" + uuid + "');\">DELETE</span>" +
+                    //                  "<input type='hidden' name='hdnInventory' value='" + $("#locationid").val() + ":" + $("#qty").val() +
+                    //                  ":" + $("#boxid").val() + ":" + $("#quantity").val() + ":" + newCapacity + "'/></td></tr>");
+
+                    //$("#invTable").append("<tr id='"+uuid+"'><td>" + '@item.Inventory.sku' + "</td><td>" + '@item.qty' +
+                    //    "</td><td><span class='delete' onclick=\"javascript:DeleteItem('" + uuid + "');\">DELETE</span>" +
+                    //    "<input type='hidden' name='hdnInventory' value='" + '@item.Inventory.id' + ":" + '@item.qty' + "'/></td></tr>");
+                    //$("#divList").show();
+                    *@
+                </text>
+            }
+        }
+
+        $("#sku").change(function () {   
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "/product/"+$(this).val(),
+                success: function (data) {
+                    $("#divBarcode").text(data);
+                    //$("#qty").append('<option value=""></option>');
+                    //for (var i = 1; i <= data; i++) {
+                    //    $("#qty").append($('<option></option>').val(i).html(i));
+                    //}
+                    //$.each(data, function (id, option) {
+                    //    $("#qty").append($('<option></option>').val(option.val).html(option.val));
+                    //});
+                    //statesProgress.hide();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert('Failed to retrieve states.');
+                    //statesProgress.hide();
+                }
+            });
+        });
+
+        $(function () {
+            $("#expdate").datepicker();
+            $("#inputdate").datepicker();
+        });
+    });
+</script>
+<h2><a href="/Inventory">Inventories</a> :: Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+    <div class="form-horizontal">
+<hr />
+
+        <div class="EZCol">
+            <div class="form-group" style="width:500px">
+                @Html.LabelFor(model => model.companyid, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @ViewBag.Company
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.sku, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.sku)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.expdate, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.expdate)
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="EZCol" style="clear:right"> 
+
+            <div class="form-group">
+                <label class="control-label col-md-4" for="batch">Barcode</label>
+                <div class="col-md-8" id="divBarcode">
+                    @ViewBag.Barcocde
+                </div>
+            </div> 
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.batch, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.batch)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.inputdate, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(model => model.inputdate)
+                </div>
+            </div>
+
+        </div>
+       <div style="display:none; position:relative; padding-top:10px; padding-bottom:20px; clear:both; width:80%" id="divList">
+        <div class="CSSTableGenerator" style="clear:both; min-width:300px">
+                <table id="invTable">
+                    <tr>
+                        <td style="width:20%">
+                            Location
+                        </td>
+                        <td style="width:10%">
+                            Lot
+                        </td>
+                        <td style="width:20%">
+                            Carton Q'ty
+                        </td>
+                        <td style="width:20%">
+                            Items/Carton
+                        </td>
+                        <td style="width:20%">
+                            Total Item Qty
+                        </td>
+                    </tr>
+                </table>
+            </div>
+    </div>
+<div class="EZCol" style="clear:left;width:500px">@Html.ValidationMessageFor(model => model.InventoryDetails)</div>
+</div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

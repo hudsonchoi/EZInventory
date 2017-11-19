@@ -1,0 +1,112 @@
+﻿@using EZInventory.Models;
+@model IEnumerable<EZInventory.Models.InventoryListModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using PagedList.Mvc;
+@using PagedList;
+@using EZInventory.Models;
+@{                    
+    PagedListRenderOptions option = new PagedListRenderOptions();
+    option.Display = PagedListDisplayMode.IfNeeded;
+}
+@{LoginModel lm = (LoginModel)Session["loginModel"];}
+<script type="text/javascript">
+    $(function () {
+        $("#Keyword").focus();
+    });
+</script>
+<h2>Inventories</h2>
+
+<p>
+@if (lm.companyID == 0){
+    @Html.ActionLink("Create New", "Create")
+}
+</p>
+@{
+    object checkedProperty =  (ViewBag.barcodeOnly == "false") ? null: new { @checked="checked", value = "true"};
+}
+@using (Html.BeginForm()) {
+<div style="width:100%;text-align:center;margin-bottom:10px">
+    @Html.TextBox("Keyword") <input id="submitButton" type="submit" value="Search"/>
+    @if (lm.companyID == 0){
+        @Html.CheckBox("barcode", checkedProperty) <label for="barcode">Barcode Inventory Management</label>
+    }
+</div>
+}
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Inventory", new { q = ViewBag.q, page }),option)
+    }
+</div>
+<div class="CSSTableGenerator" style="clear:both">
+<table>
+    <tr>
+        <td>
+           COMPANY
+        </td>
+        <td>
+           ITEM CODE
+        </td>
+        <td>
+          BARCODE
+        </td>
+        <td>
+            STOCKING DATE
+        </td>
+        <td>
+            ITEM QTY
+        </td>
+        <td>
+            LOCATION
+        </td>
+        <td></td>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.company)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sku)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.barcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stockingDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalQty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.ID })
+            @if (lm.companyID == 0){
+                @:| @Html.ActionLink("Edit", "Edit", new { id=item.ID })
+                @:| @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            }
+
+
+            
+        </td>
+    </tr>
+}
+</table>
+</div>
+<div style="margin-top:20px; width:100%; text-align:right">
+<a href="@Url.Action("ExportToExcel", "Inventory", new {page=Request.QueryString["page"]})">
+<img src="@Url.Content("~/Content/images/excel.png")" />
+</a>
+@*@Html.ActionLink("Excel", "ExportToExcel", new {page=Request.QueryString["page"]})*@
+</div>
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Inventory", new { q = ViewBag.q, page }),option)
+    }
+</div>

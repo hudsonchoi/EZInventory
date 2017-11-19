@@ -1,0 +1,132 @@
+﻿@model EZInventory.Models.WorkOrderModel
+
+@{
+    ViewBag.Title = "Packing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/inventory.js"></script>
+<div id="content">
+<br />
+   <div id="printDiv">
+    <style type="text/css">
+        .ptable {
+            width:100%;border-collapse:collapse;text-align:center;
+            font-family:Arial; font-size:10px;
+        }
+        .ptable tr th {
+            text-align:center 
+        }
+    </style>
+                <div style="width:100%;text-align:center; margin-bottom:10px">
+                <b>Y.J. Packaging Solution Inc.</b><br />
+                <div style="font-size:10px">
+                201 Gates Road unit# F Little Ferry, NJ 07643  | (T)718-530-4032<br /><br />
+                </div>
+<b>PACKING SLIP</b></div>
+                <table border="1" class="ptable">
+                    <tr>
+                        <th style="width:50%">
+                            ORDER #
+                        </th>
+                        <th>
+                            SHIP DATE
+                        </th>
+                    </tr>
+                    <tr>
+                         <td>
+                            @Html.Display("OrderID")
+                         </td>
+                        <td>
+                            @Html.Display("ShipDate")
+                        </td>
+                    </tr>
+                </table>
+            <br />
+                <table border="1" class="ptable">
+                    <tr>
+                        <th style="width:50%">
+                            SHIP TO
+                        </th>
+                        <th>
+                            BILL TO
+                        </th>
+                    </tr>
+                    <tr>
+                         <td>
+                            @Html.Display("ShipTo")<br />
+                            @Html.Display("ShipToAddress")<br />
+                            @Html.Display("ShipToCity") @Html.Display("ShipToState") @Html.Display("ShipToZip")
+                         </td>
+                        <td>
+                            @Html.Display("BillTo")<br />
+                            @Html.Display("BillToAddress")<br />
+                            @Html.Display("BillToCity") @Html.Display("BillToState") @Html.Display("BillToZip")
+                        </td>
+                    </tr>
+                </table>                
+            <br />
+                 <table border="1" class="ptable">
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            ITEM CODE
+                        </th>
+                        <th>
+                            ITEM NAME
+                        </th>
+                        <th>
+                            ITEM DESCRIPTION
+                        </th>
+                        <th>
+                            UNT. CARTON<br />
+                            PAR. CARTON
+                        </th>
+                        <th>
+                            Q'TY
+                        </th>
+                    </tr>
+                   @{int i = 1;} 
+                   @foreach (var item in Model.LocationViewModels) {
+                         <tr>
+                                <td>
+                                   @i
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.InventoryView.sku)
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.InventoryView.Item.name)
+                                </td>
+                                <td>
+                                   @Html.DisplayFor(modelItem => item.InventoryView.Item.description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.untCarton)<br />
+                                    @Html.DisplayFor(modelItem => item.parCarton)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.itemQty)
+                                </td>  
+                        </tr>
+                        i++;
+                     }
+                     <tr style="font-weight:bold">
+                            <td colspan="4" style="text-align:right">TOTOAL:</td>
+                            <td>@Html.Display("TotalCarton")</td>
+                            <td>@Html.Display("TotalQty")</td>
+                     </tr>
+                </table>
+       
+            <br /><br />
+
+        </div>
+        <div style="width:600px; text-align:right"><a href="javascript:CallPrint('printDiv')">Print</a></div>
+    <br /><br />
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id=Model.OrderID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+

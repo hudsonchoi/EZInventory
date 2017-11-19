@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EZInventoryModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="EZInventoryEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Boxes" EntityType="EZInventoryModel.Box" />
+    <EntitySet Name="Categories" EntityType="EZInventoryModel.Category" />
+    <EntitySet Name="Colors" EntityType="EZInventoryModel.Color" />
+    <EntitySet Name="Status" EntityType="EZInventoryModel.Status" />
+    <EntitySet Name="Stores" EntityType="EZInventoryModel.Store" />
+    <EntitySet Name="Locations" EntityType="EZInventoryModel.Location" />
+    <EntitySet Name="CompanyOrders" EntityType="EZInventoryModel.CompanyOrder" />
+    <EntitySet Name="Companies" EntityType="EZInventoryModel.Company" />
+    <AssociationSet Name="FK_CompanyOrder_Company" Association="EZInventoryModel.FK_CompanyOrder_Company">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="CompanyOrder" EntitySet="CompanyOrders" />
+    </AssociationSet>
+    <EntitySet Name="OrderDetails" EntityType="EZInventoryModel.OrderDetail" />
+    <EntitySet Name="Orders" EntityType="EZInventoryModel.Order" />
+    <AssociationSet Name="FK_CompanyOrder_Order" Association="EZInventoryModel.FK_CompanyOrder_Order">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="CompanyOrder" EntitySet="CompanyOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Status" Association="EZInventoryModel.FK_Order_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Order" Association="EZInventoryModel.FK_OrderDetails_Order">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <EntitySet Name="Items" EntityType="EZInventoryModel.Item" />
+    <AssociationSet Name="FK_Product_Category" Association="EZInventoryModel.FK_Product_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Color" Association="EZInventoryModel.FK_Product_Color">
+      <End Role="Color" EntitySet="Colors" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Company" Association="EZInventoryModel.FK_Item_Company">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <EntitySet Name="InventoryDetails" EntityType="EZInventoryModel.InventoryDetail" />
+    <AssociationSet Name="FK_InventoryDetails_Box" Association="EZInventoryModel.FK_InventoryDetails_Box">
+      <End Role="Box" EntitySet="Boxes" />
+      <End Role="InventoryDetail" EntitySet="InventoryDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InventoryDetails_Location" Association="EZInventoryModel.FK_InventoryDetails_Location">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="InventoryDetail" EntitySet="InventoryDetails" />
+    </AssociationSet>
+    <EntitySet Name="Inventories" EntityType="EZInventoryModel.Inventory" />
+    <AssociationSet Name="FK_Inventory_Company" Association="EZInventoryModel.FK_Inventory_Company">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Inventory" EntitySet="Inventories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Inventory_Product" Association="EZInventoryModel.FK_Inventory_Product">
+      <End Role="Item" EntitySet="Items" />
+      <End Role="Inventory" EntitySet="Inventories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InventoryDetails_Inventory" Association="EZInventoryModel.FK_InventoryDetails_Inventory">
+      <End Role="Inventory" EntitySet="Inventories" />
+      <End Role="InventoryDetail" EntitySet="InventoryDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Inventory" Association="EZInventoryModel.FK_OrderDetails_Inventory">
+      <End Role="Inventory" EntitySet="Inventories" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Box">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="size" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="type" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="InventoryDetails" Relationship="EZInventoryModel.FK_InventoryDetails_Box" FromRole="Box" ToRole="InventoryDetail" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="description" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Items" Relationship="EZInventoryModel.FK_Product_Category" FromRole="Category" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Color">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="name" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="abbr" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Items" Relationship="EZInventoryModel.FK_Product_Color" FromRole="Color" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="description" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Orders" Relationship="EZInventoryModel.FK_Order_Status" FromRole="Status" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Store">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="name" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="street" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="city" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="state" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="zip" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="companyid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="String" Name="id" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="description" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="InventoryDetails" Relationship="EZInventoryModel.FK_InventoryDetails_Location" FromRole="Location" ToRole="InventoryDetail" />
+    <Property Type="Boolean" Name="deleted" />
+  </EntityType>
+  <EntityType Name="CompanyOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Byte" Name="type" Nullable="false" />
+    <Property Type="Int32" Name="orderid" Nullable="false" />
+    <Property Type="Int32" Name="companyid" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="EZInventoryModel.FK_CompanyOrder_Company" FromRole="CompanyOrder" ToRole="Company" />
+    <NavigationProperty Name="Order" Relationship="EZInventoryModel.FK_CompanyOrder_Order" FromRole="CompanyOrder" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="name" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="billto" />
+    <Property Type="Boolean" Name="shipto" />
+    <Property Type="Int32" Name="billtocid" />
+    <NavigationProperty Name="CompanyOrders" Relationship="EZInventoryModel.FK_CompanyOrder_Company" FromRole="Company" ToRole="CompanyOrder" />
+    <Property Type="String" Name="address" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="city" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="state" MaxLength="2" FixedLength="true" Unicode="false" />
+    <Property Type="String" Name="zip" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="email" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="password" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Items" Relationship="EZInventoryModel.FK_Item_Company" FromRole="Company" ToRole="Item" />
+    <NavigationProperty Name="Inventories" Relationship="EZInventoryModel.FK_Inventory_Company" FromRole="Company" ToRole="Inventory" />
+    <Property Type="Boolean" Name="deleted" />
+  </EntityType>
+  <Association Name="FK_CompanyOrder_Company">
+    <End Type="EZInventoryModel.Company" Role="Company" Multiplicity="1" />
+    <End Type="EZInventoryModel.CompanyOrder" Role="CompanyOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="CompanyOrder">
+        <PropertyRef Name="companyid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="orderid" Nullable="false" />
+    <Property Type="String" Name="locationid" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="inventoryid" Nullable="false" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="Int32" Name="boxqty" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="EZInventoryModel.FK_OrderDetails_Order" FromRole="OrderDetail" ToRole="Order" />
+    <NavigationProperty Name="Inventory" Relationship="EZInventoryModel.FK_OrderDetails_Inventory" FromRole="OrderDetail" ToRole="Inventory" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="date" Precision="3" />
+    <Property Type="Int32" Name="statusid" Nullable="false" />
+    <Property Type="Decimal" Name="rate" Precision="19" Scale="4" />
+    <NavigationProperty Name="CompanyOrders" Relationship="EZInventoryModel.FK_CompanyOrder_Order" FromRole="Order" ToRole="CompanyOrder" />
+    <NavigationProperty Name="Status" Relationship="EZInventoryModel.FK_Order_Status" FromRole="Order" ToRole="Status" />
+    <NavigationProperty Name="OrderDetails" Relationship="EZInventoryModel.FK_OrderDetails_Order" FromRole="Order" ToRole="OrderDetail" />
+    <Property Type="Boolean" Name="deleted" />
+    <Property Type="DateTime" Name="shippingdate" Precision="3" />
+  </EntityType>
+  <Association Name="FK_CompanyOrder_Order">
+    <End Type="EZInventoryModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="EZInventoryModel.CompanyOrder" Role="CompanyOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="CompanyOrder">
+        <PropertyRef Name="orderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Status">
+    <End Type="EZInventoryModel.Status" Role="Status" Multiplicity="1" />
+    <End Type="EZInventoryModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="statusid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Order">
+    <End Type="EZInventoryModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="EZInventoryModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="orderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="sku" />
+    </Key>
+    <Property Type="String" Name="sku" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="name" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="categoryid" />
+    <Property Type="Int32" Name="colorid" />
+    <Property Type="String" Name="description" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="barcode" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="companyid" />
+    <NavigationProperty Name="Category" Relationship="EZInventoryModel.FK_Product_Category" FromRole="Item" ToRole="Category" />
+    <NavigationProperty Name="Color" Relationship="EZInventoryModel.FK_Product_Color" FromRole="Item" ToRole="Color" />
+    <NavigationProperty Name="Company" Relationship="EZInventoryModel.FK_Item_Company" FromRole="Item" ToRole="Company" />
+    <NavigationProperty Name="Inventories" Relationship="EZInventoryModel.FK_Inventory_Product" FromRole="Item" ToRole="Inventory" />
+    <Property Type="Boolean" Name="deleted" />
+  </EntityType>
+  <Association Name="FK_Product_Category">
+    <End Type="EZInventoryModel.Category" Role="Category" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EZInventoryModel.Item" Role="Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="categoryid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Color">
+    <End Type="EZInventoryModel.Color" Role="Color" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EZInventoryModel.Item" Role="Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Color">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="colorid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Company">
+    <End Type="EZInventoryModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="EZInventoryModel.Item" Role="Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="companyid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="InventoryDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="inventoryid" />
+    <Property Type="String" Name="locationid" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="boxid" />
+    <Property Type="Int32" Name="boxqty" />
+    <Property Type="Int32" Name="itemqty" />
+    <Property Type="Int32" Name="capacity" />
+    <Property Type="Int32" Name="itemperbox" />
+    <Property Type="String" Name="lot" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Box" Relationship="EZInventoryModel.FK_InventoryDetails_Box" FromRole="InventoryDetail" ToRole="Box" />
+    <NavigationProperty Name="Location" Relationship="EZInventoryModel.FK_InventoryDetails_Location" FromRole="InventoryDetail" ToRole="Location" />
+    <NavigationProperty Name="Inventory" Relationship="EZInventoryModel.FK_InventoryDetails_Inventory" FromRole="InventoryDetail" ToRole="Inventory" />
+  </EntityType>
+  <Association Name="FK_InventoryDetails_Box">
+    <End Type="EZInventoryModel.Box" Role="Box" Multiplicity="0..1" />
+    <End Type="EZInventoryModel.InventoryDetail" Role="InventoryDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Box">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="InventoryDetail">
+        <PropertyRef Name="boxid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_InventoryDetails_Location">
+    <End Type="EZInventoryModel.Location" Role="Location" Multiplicity="0..1" />
+    <End Type="EZInventoryModel.InventoryDetail" Role="InventoryDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="InventoryDetail">
+        <PropertyRef Name="locationid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="sku" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="lot" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="batch" MaxLength="50" />
+    <Property Type="DateTime" Name="expdate" Precision="3" />
+    <Property Type="DateTime" Name="inputdate" Precision="3" />
+    <Property Type="Int32" Name="companyid" Nullable="false" />
+    <Property Type="Int32" Name="capacity" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="EZInventoryModel.FK_Inventory_Company" FromRole="Inventory" ToRole="Company" />
+    <NavigationProperty Name="Item" Relationship="EZInventoryModel.FK_Inventory_Product" FromRole="Inventory" ToRole="Item" />
+    <NavigationProperty Name="InventoryDetails" Relationship="EZInventoryModel.FK_InventoryDetails_Inventory" FromRole="Inventory" ToRole="InventoryDetail" />
+    <NavigationProperty Name="OrderDetails" Relationship="EZInventoryModel.FK_OrderDetails_Inventory" FromRole="Inventory" ToRole="OrderDetail" />
+    <Property Type="Boolean" Name="deleted" />
+  </EntityType>
+  <Association Name="FK_Inventory_Company">
+    <End Type="EZInventoryModel.Company" Role="Company" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EZInventoryModel.Inventory" Role="Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="companyid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Inventory_Product">
+    <End Type="EZInventoryModel.Item" Role="Item" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EZInventoryModel.Inventory" Role="Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="sku" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="sku" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_InventoryDetails_Inventory">
+    <End Type="EZInventoryModel.Inventory" Role="Inventory" Multiplicity="0..1" />
+    <End Type="EZInventoryModel.InventoryDetail" Role="InventoryDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Inventory">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="InventoryDetail">
+        <PropertyRef Name="inventoryid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Inventory">
+    <End Type="EZInventoryModel.Inventory" Role="Inventory" Multiplicity="1" />
+    <End Type="EZInventoryModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Inventory">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="inventoryid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

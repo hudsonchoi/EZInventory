@@ -1,0 +1,162 @@
+﻿@model EZInventory.Model.Order
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#more").hide();
+        //$('#inventoryid').prop('disabled', 'disabled');
+        //$('#qty').prop('disabled', 'disabled');
+        
+        //Let's pre-populate the list of inventories!!!
+        var _myItems = JSON.parse('@Html.Raw(Json.Encode(ViewData["groupOrderDetails"]))');
+
+        $.each(_myItems, function(index, item){
+            var uuid = guid();
+            //$("#invHidden").append("<input type='hidden' name='hdnInventory' value='" + $("#inventoryid").val() + ":" + $("#qty").val() + "'/>");
+            $("#invTable").append("<tr id='"+uuid+"'><td>" + item.sku + "</td><td>" + item.qty +
+                "</td><td><span class='delete' onclick=\"javascript:DeleteItem('" + uuid + "');\">DELETE</span>" +
+                "<input type='hidden' name='hdnInventory' value='" +  item.inventoryid + ":" + item.qty + "'/></td></tr>");
+            $("#divList").show();
+        });
+
+        //}
+
+
+        $("#inventoryid").change(function () {
+             $.ajax({
+                 cache: false,
+                 type: "GET",
+                 url: "/inventory/getqty/"+$(this).val(),
+                 success: function (data) {
+                     $("#max").text("Max:" + data);
+                     $("#more").show();
+                     //$('#qty').empty();
+                     //for (var i = 1; i <= data; i++) {
+                     //    $("#qty").append($('<option></option>').val(i).html(i));
+                     //}
+                        //$.each(data, function (id, option) {
+                        //    $("#qty").append($('<option></option>').val(option.val).html(option.val));
+                        //});
+                        //statesProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //alert('Failed to retrieve states.');
+                        //statesProgress.hide();
+                    }
+                });
+        });
+    });
+
+    function DeleteItem(id) {
+        $("#" + id).remove();
+        if ($("input[name=hdnInventory]").length == 0) {
+            $("#divList").hide();
+        }
+    }
+
+    function AddMore() {
+        $('tr:has(td:contains("' + $("#inventoryid option:selected").text() + '"))').remove();//Remove existing inventory if any for proper order
+        var uuid = guid();
+        //$("#invHidden").append("<input type='hidden' name='hdnInventory' value='" + $("#inventoryid").val() + ":" + $("#qty").val() + "'/>");
+        $("#invTable").append("<tr id='" + uuid + "'><td>" + $("#inventoryid option:selected").text() + "</td><td>" + $("#qty").val() +
+                              "</td><td><span class='delete' onclick=\"javascript:DeleteItem('" + uuid + "');\">DELETE</span>" +
+                              "<input type='hidden' name='hdnInventory' value='" + $("#inventoryid").val() + ":" + $("#qty").val() + "'/></td></tr>");
+        //"</td><td><p id=\"demo\" onclick=\"myFunction()\">Click me to change my text color.</p></td></tr>");
+        $("#divList").show();
+        $("#inventoryid").val('');
+        $("#qty").val('');
+    }
+
+    var guid = (function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                       .toString(16)
+                       .substring(1);
+        }
+        return function () {
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                   s4() + '-' + s4() + s4() + s4();
+        };
+    })();
+
+ </script> 
+<style type="text/css">
+    #qty {
+        width: 100px;
+    }
+    #rate {
+        width: 100px;  
+    }
+</style>
+<h2><a href="/Order">Orders</a> :: Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <div>
+            <div class="EZLabel b">Bill To</div>
+            <div class="EZField" style="margin-left:7px">@Html.Display("BillTo")</div>
+            <div style="width:80px;float:left">&nbsp;</div>
+            <div class="EZLabel b">Ship To</div>
+            <div class="EZField" style="margin-left:7px">@Html.Display("ShipTo")</div>
+            <div style="width:80px;float:left">&nbsp;</div>
+            <div class="EZLabel b">Status</div>
+            <div class="EZField" style="margin-left:7px">@Html.DropDownList("statusid", String.Empty)</div>
+        </div>
+
+        <div style="display:none; position:relative; padding-top:10px; clear:both; width:70%" id="divList">
+            <div class="CSSTableGenerator" style="clear:both; min-width:300px">
+                <table id="invTable">
+                    <tr>
+                        <td style="width:70%">
+                            SKU
+                        </td>
+                        <td style="width:20%">
+                            Qty
+                        </td>
+                        <td style="width:10%">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>  
+        
+        <div class="EZRow">
+            <div class="EZLabel b">SKU</div>
+            <div class="EZField" style="margin-left:7px">@Html.DropDownList("inventoryid", String.Empty)</div>
+        </div>
+        <div class="EZRow">
+            <div class="EZLabel b">Quantity</div>
+            <div class="EZField" style="width:300px; margin-left:7px">@Html.TextBox("qty") <span id="max" style="font-size:10px"></span> <span id="more" style="font-size:10px"><a href="#" onclick="AddMore()">Add More</a></span></div>
+        </div>
+        <div class="EZRow">
+            <div class="EZLabel b">Total Due</div>
+            <div class="EZField" style="width:300px">$@Html.EditorFor(model => model.rate,"",new { @class = "shorty"})</div>
+        </div>
+@*       @Html.HiddenFor(model => model.companyid)*@
+         @Html.HiddenFor(model => model.date)
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

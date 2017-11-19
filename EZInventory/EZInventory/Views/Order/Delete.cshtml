@@ -1,0 +1,90 @@
+﻿@model EZInventory.Model.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2><a href="/Order">Orders</a> :: Delete</h2>
+    <br />
+    <h5>Are you sure you want to delete this order?</h5>
+    <table id="order" border="1">
+        <tr>
+            <th>
+                Bill To
+            </th>
+            <th>
+                Ship To
+            </th>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Total Due
+            </th>
+        </tr>
+        <tr>
+             <td>
+                @Html.Display("BillTo")
+             </td>
+            <td>
+                @Html.Display("ShipTo")
+            </td>
+            <td>
+                 @Html.DisplayFor(model => model.date)
+            </td>
+             <td>
+                 @Html.DisplayFor(model => model.Status.description)
+            </td>
+            <td>
+                $@Html.DisplayFor(model => model.rate)
+            </td>
+        </tr>
+    </table>
+
+</div>
+<br />
+<div class="CSSTableGenerator" style="clear:both; min-width:300px">
+<table>
+    <tr>
+        <td>
+            SKU
+        </td>
+        <td>
+            Quantity
+        </td>
+    </tr>
+@foreach (var item in Model.OrderDetails) {
+      <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Inventory.sku)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.qty)
+            </td>  
+    </tr>
+}
+</table>
+</div>
+<br />
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.date)
+        @Html.HiddenFor(model => model.statusid)
+        @Html.HiddenFor(model => model.rate)
+        @Html.HiddenFor(model => model.deleted)
+        @Html.HiddenFor(model => model.shippingdate)
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    }
+<br />
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

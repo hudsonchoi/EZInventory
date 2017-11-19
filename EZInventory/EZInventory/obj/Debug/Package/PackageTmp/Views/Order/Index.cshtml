@@ -1,0 +1,109 @@
+﻿@model IEnumerable<EZInventory.Models.OrderListModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using PagedList.Mvc;
+@using PagedList;
+@using EZInventory.Models;
+@{                    
+    PagedListRenderOptions option = new PagedListRenderOptions();
+    option.Display = PagedListDisplayMode.IfNeeded;
+}
+@{LoginModel lm = (LoginModel)Session["loginModel"];}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Keyword").focus();
+    });
+</script>
+<h2>Orders</h2>
+<p>
+@if (lm.companyID == 0){
+    @Html.ActionLink("Create New", "Create")
+}
+</p>
+@using (Html.BeginForm()) {
+<div style="width:100%;text-align:center;margin-bottom:10px">
+    @Html.TextBox("Keyword") <input id="submitButton" type="submit" value="Search Order"/>
+</div>
+}
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Order", new { q = ViewBag.q, page }),option)
+    }
+</div>
+<div class="CSSTableGenerator" style="clear:both">
+<table>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.ID)
+        </td>
+        <td>
+            Bill To
+        </td>
+        <td>
+            Ship To
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Items)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.TotalQuantity)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Date)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Status)
+        </td>
+        <td>
+            Administrator
+        </td>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillTo)
+        </td>
+<td>
+            @Html.DisplayFor(modelItem => item.ShipTo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Items)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalQuantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+
+            @Html.ActionLink("Details", "Details", new { id= item.ID }) 
+            @if (lm.companyID == 0){
+               @:| @Html.ActionLink("Edit", "Edit", new { id= item.ID }) 
+               @:| @Html.ActionLink("Work Order", "WorkOrder", new { ID = item.ID })
+               @:| @Html.ActionLink("Packing", "Packing", new { ID = item.ID, view = "Packing" }) 
+               @:| @Html.ActionLink("Invoice", "Packing", new { ID = item.ID, view = "Invoice" }) 
+               @:| @Html.ActionLink("Delete", "Delete", new { id= item.ID })
+            }
+
+
+
+        </td>
+    </tr>
+}
+</table>
+</div>
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Order", new { q = ViewBag.q, page }),option)
+    }
+</div>

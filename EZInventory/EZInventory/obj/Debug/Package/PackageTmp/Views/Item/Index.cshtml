@@ -1,0 +1,82 @@
+﻿@model IEnumerable<EZInventory.Model.Item>
+@{
+    ViewBag.Title = "Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using PagedList.Mvc;
+@using PagedList;
+@{                    
+    PagedListRenderOptions option = new PagedListRenderOptions();
+    option.Display = PagedListDisplayMode.IfNeeded;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#Keyword").focus();
+    });
+</script>
+<h2>Items</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@{
+    object checkedProperty =  (ViewBag.barcodeOnly == "false") ? null: new { @checked="checked", value = "true"};
+}
+@using (Html.BeginForm()) {
+<div style="width:100%;text-align:center;margin-bottom:10px">
+    @Html.TextBox("Keyword") <input id="submitButton" type="submit" value="Search"/>
+    @Html.CheckBox("barcode", checkedProperty) <label for="barcode">Barcode Inventory Management</label>
+</div>
+}
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Item", new { q = ViewBag.q, page }),option)
+    }
+</div>
+<div class="CSSTableGenerator" style="clear:both">
+<table>
+    <tr>
+        <td>
+            COMPANY
+        </td>
+        <td>
+            SKU
+        </td>
+        <td>
+            BARCODE
+        </td>
+        <td>
+            NAME
+        </td>
+        <td>
+            ADMIN
+        </td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sku)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.barcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { sku = item.sku }) |
+                @Html.ActionLink("Details", "Details", new { sku = item.sku }) |
+                @Html.ActionLink("Delete", "Delete", new { sku = item.sku })
+            </td>
+        </tr>
+    }
+</table>
+</div>
+<div class="pagerClass">
+    @if (ViewBag.onePageOfResults != null){
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfResults, page => Url.Action("Index","Item", new { q = ViewBag.q, page }),option)
+    }
+</div>

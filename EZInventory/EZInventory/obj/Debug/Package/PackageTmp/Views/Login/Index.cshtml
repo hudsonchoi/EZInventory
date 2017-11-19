@@ -1,0 +1,291 @@
+﻿@model EZInventory.Models.LoginModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<h2>Login</h2>
+
+   <table><tr><td style="vertical-align:top">
+    @using (Html.BeginForm())
+    {
+    <div>
+         <table style="width:190px">
+             <tr>
+                 <td>Email:</td>
+                 <td>@Html.TextBoxFor(m => m.email)</td>
+             </tr>
+             <tr>                 
+                 <td>Password:</td>
+                 <td>@Html.PasswordFor(m => m.password)</td>
+             </tr>
+            <tr>
+                <td></td>
+                <td style="padding-left:3px">
+                 <input type="submit" value="Log In" />
+                </td>
+            </tr>
+             <tr>
+                 <td colspan="2" class="req">
+                     @ViewBag.Message
+                 </td>
+             </tr>
+         </table>
+        <br />
+     </div>
+    }
+</td>
+<td>
+<table cellpadding="5" border="1">
+
+<tr>
+<td class="dateCol">
+11/28/2015
+</td>
+<td>
+* Bug-fix: Reflect the location capacity just assigned in the dropdown menu when creating/editing inventories.
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/16/2015
+</td>
+<td>
+* Bug-fix: Work order/Packing/Invoice qty miscalculation when edit an order to add more inventories<br />
+* Bug-fix: Limit the number of chars of state to 2 and that of zip for 10 during company registration <br />
+* Bug-fix: Do not show the location/qty rows at inventory details and delete page when no quantity left <br />
+* Handle open box workflow (for example par. carton quantity is 5 but order requires 7 quantity)<br />
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/9/2015
+</td>
+<td>
+* Reclaimed the location capacity once order is shippedd <br />
+* Changed from 'completed' to 'shipped' to reduce inventory/location <br />
+* Bug fix: Item quantiy calculation in Location <br />
+
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/2/2015
+</td>
+<td>
+* Bug fix: Workorder/Packing/Invoice carton calculation error <br />
+* Reduce the inventory once an order is completed
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/27/2015
+</td>
+<td>
+* Implemented the new partial box logic
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/23/2015
+</td>
+<td>
+* Make batch to accept string
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/17/2015
+</td>
+<td>
+* Added export to excel at inventories
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/11/2015
+</td>
+<td>
+* Search order by barcode<br />
+* Add item qty in Locations<br />
+* Updated order status to be Received/Ready/Shipped/Completed<br />
+* Added Details/Delete to Inventories
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/7/2015
+</td>
+<td>
+* Pre-select company and sku once barcode is entered at the inventory search field<br />
+* Allow non-integer value to lot
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+10/3/2015
+</td>
+<td>
+* Navigation style change<br />
+* Added 'Company' to item manager
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+8/10/2015
+</td>
+<td>
+* Added Companies
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+8/4/2015
+</td>
+<td>
+* Added Locations
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+7/26/2015
+</td>
+<td>
+* Assign Lot to each location during add/edit inventory workflows
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+3/10/2015
+</td>
+<td>
+* Debug the wrong required field validation to barcode creating an item<br />
+* Show 'Details' only for the customers
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+2/28/2015
+</td>
+<td>
+* Enabled preliminary security system
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+2/3/2015
+</td>
+<td>
+* Order Management: Enabled required field form validation<br />
+* Enabled pagination
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+1/20/2015
+</td>
+<td>
+* Inventory Management: Enabled required field form validation
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+1/18/2015
+</td>
+<td>
+* Order Management: Added Details and Delete; Save shipping date once order is marked as 'Shipped'<br />
+* Item Management: Enabled required field form validation
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+1/14/2015
+</td>
+<td>
+* Add Search Item and Inventory<br />
+* Identify product w/ barcode data
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+1/1/2015
+</td>
+<td>
+* Add Search Order
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+12/20/2014
+</td>
+<td>
+* Add 'Total Due'<br />
+* Add 'Packing Slip'<br />
+* Add 'Invoice'
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+12/15/2014
+</td>
+<td>
+* Implement items/box logic<br />
+* Add 'Work Order'
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/30/2014
+</td>
+<td>
+* Add 'Ship To' and 'Bill To' in order management
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/16/2014
+</td>
+<td>
+* Creating/Editing inventories allow to store items over multiple locations<br />
+* Add box when create and edit inventories
+</td>
+</tr>
+
+<tr>
+<td class="dateCol">
+11/1/2014
+</td>
+<td>
+* Add LocationID(Skid) into the system </br>
+* Create new inventory workflow showing current capacity of location by %<br />
+* Edit inventory workflow enabling location and capacity change
+</td>
+</tr>
+
+</table>
+</td>
+          </tr></table>

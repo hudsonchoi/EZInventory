@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f73a14a5260440468808d0624960a5c2" Name="Diagram1" ZoomLevel="75">
+        <EntityTypeShape EntityType="EZInventoryModel.Box" Width="1.5" PointX="11.125" PointY="18.25" />
+        <EntityTypeShape EntityType="EZInventoryModel.Category" Width="1.5" PointX="12" PointY="23.25" />
+        <EntityTypeShape EntityType="EZInventoryModel.Color" Width="1.5" PointX="19.5" PointY="22" />
+        <EntityTypeShape EntityType="EZInventoryModel.Status" Width="1.5" PointX="12.5" PointY="11.5" />
+        <EntityTypeShape EntityType="EZInventoryModel.Store" Width="1.5" PointX="2.9469295288188988" PointY="28.357687590810325" />
+        <EntityTypeShape EntityType="EZInventoryModel.Location" Width="1.5" PointX="8.375" PointY="14.625" />
+        <EntityTypeShape EntityType="EZInventoryModel.CompanyOrder" Width="1.5" PointX="20.375" PointY="11.25" />
+        <EntityTypeShape EntityType="EZInventoryModel.Company" Width="1.5" PointX="20.5" PointY="16.375" />
+        <AssociationConnector Association="EZInventoryModel.FK_CompanyOrder_Company" />
+        <EntityTypeShape EntityType="EZInventoryModel.OrderDetail" Width="1.5" PointX="16.625" PointY="15" />
+        <EntityTypeShape EntityType="EZInventoryModel.Order" Width="1.5" PointX="16.25" PointY="11.5" />
+        <AssociationConnector Association="EZInventoryModel.FK_CompanyOrder_Order" />
+        <AssociationConnector Association="EZInventoryModel.FK_Order_Status" />
+        <AssociationConnector Association="EZInventoryModel.FK_OrderDetails_Order" />
+        <EntityTypeShape EntityType="EZInventoryModel.Item" Width="1.5" PointX="15.25" PointY="22.625" />
+        <AssociationConnector Association="EZInventoryModel.FK_Product_Category" />
+        <AssociationConnector Association="EZInventoryModel.FK_Product_Color" />
+        <AssociationConnector Association="EZInventoryModel.FK_Item_Company" />
+        <EntityTypeShape EntityType="EZInventoryModel.InventoryDetail" Width="1.5" PointX="12.25" PointY="13.75" />
+        <AssociationConnector Association="EZInventoryModel.FK_InventoryDetails_Box" />
+        <AssociationConnector Association="EZInventoryModel.FK_InventoryDetails_Location" />
+        <EntityTypeShape EntityType="EZInventoryModel.Inventory" Width="1.5" PointX="14.5" PointY="18.375" />
+        <AssociationConnector Association="EZInventoryModel.FK_Inventory_Company" />
+        <AssociationConnector Association="EZInventoryModel.FK_Inventory_Product" />
+        <AssociationConnector Association="EZInventoryModel.FK_InventoryDetails_Inventory" />
+        <AssociationConnector Association="EZInventoryModel.FK_OrderDetails_Inventory" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
