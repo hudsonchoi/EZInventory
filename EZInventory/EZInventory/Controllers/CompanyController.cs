@@ -174,7 +174,7 @@ namespace EZInventory.Controllers
             var shiptoQuery = unitOfWork.CompanyRepository.Get().Where(c => c.billtocid == id);
             foreach (Company c in shiptoQuery.ToList())
             {
-                shiptos.Add(new SelectListItem { Text = c.name, Value = c.id.ToString() });
+                shiptos.Add(new SelectListItem { Text = c.name + " " + c.zip, Value = c.id.ToString() });
             }
             return Json(new SelectList(shiptos, "Value", "Text"));
         }
