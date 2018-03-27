@@ -29,7 +29,7 @@ namespace EZInventory.Controllers
         public ActionResult Index(LoginModel model)
         {
             var companyQuery = unitOfWork.CompanyRepository.Get().Where(c => c.email == model.email && c.password == model.password);
-            if (model.email == "tonto0508@yahoo.co.kr" && model.password == "test")
+            if (model.email == "jaykim" && model.password == "yjpackaging1")
             {
                 model.companyID = 0;
                 FormsAuthentication.SetAuthCookie(model.email, false);
